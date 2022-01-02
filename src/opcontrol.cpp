@@ -62,7 +62,7 @@ void opcontrol() {
 		}
 		else if(controller.get_digital(DIGITAL_RIGHT)){
 			BottomClaw.set_value(false);
-		}
+		} //comment for no reason
 
     if(controller.get_digital(DIGITAL_B)){
       //moveToPoint(0, 0.54);
