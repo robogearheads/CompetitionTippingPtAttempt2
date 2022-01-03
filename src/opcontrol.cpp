@@ -58,11 +58,11 @@ void opcontrol() {
 
 		//Bottom Pneumatic Claw
 		if(controller.get_digital(DIGITAL_LEFT)){
-			BottomClaw.set_value(true);
+			BottomClaw.set_value(false);
 		}
 		else if(controller.get_digital(DIGITAL_RIGHT)){
-			BottomClaw.set_value(false);
-		} //comment for no reason
+			BottomClaw.set_value(true);
+		} //comment for no reaso
 
     if(controller.get_digital(DIGITAL_B)){
       //moveToPoint(0, 0.54);

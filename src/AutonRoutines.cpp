@@ -17,12 +17,12 @@ void driveForward(){
 }
 
 void driveForwardFast(){
-	LF.move_velocity(175);
-	LB.move_velocity(175);
-	RF.move_velocity(175);
-	RB.move_velocity(175);
-	LM.move_velocity(175);
-	RM.move_velocity(175);
+	LF.move_velocity(195);
+	LB.move_velocity(195);
+	RF.move_velocity(195);
+	RB.move_velocity(195);
+	LM.move_velocity(195);
+	RM.move_velocity(195);
 }
 
 void driveBack(double speed){
@@ -113,25 +113,25 @@ void WinPlatform (){
 }
 
 void CenterTable(){
-  driveBack(175);
-  pros::delay(1500);
+  driveForwardFast();
+  pros::delay(1200);
   stop();
   pros::delay(750);
-  BottomClaw.set_value(false);
+  Claw.set_value(true);
   pros::delay(100);
-  driveForwardFast();
-  pros::delay(1400);
+	driveBack(185);
+  pros::delay(1200);
   stop();
 }
 
 void CenterBanner(){
-  driveBack(175);
-  pros::delay(1500);
+	driveForwardFast();
+  pros::delay(1200);
   stop();
   pros::delay(750);
-  BottomClaw.set_value(false);
+  Claw.set_value(true);
   pros::delay(100);
-  driveForwardFast();
-  pros::delay(1400);
+  driveBack(195);
+  pros::delay(1200);
   stop();
 }
