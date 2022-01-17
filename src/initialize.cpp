@@ -74,6 +74,7 @@ void on_right_button() {
  */
 void initialize() {
   pros::lcd::initialize();
+	
 }
 
 /**

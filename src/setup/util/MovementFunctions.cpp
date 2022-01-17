@@ -25,21 +25,21 @@ void stop1(){
 }
 
 void turnPID(double targetTheta) {
+    pros::lcd::print(1, "running turn PID");
 		double current_angle = GPSSensor.get_heading();
 		double error = 2;
 		double integral = 0;
 		double derivative = 0;
 		double prevError = 0;
 		double power = 1;
+    double counter = 0;
 
-		double kP = 3; //4
-		double kI = 0.5; //0.5
-		double kD = 2; //2
+		double kP = 4; //4
+		double kI = 0; //0.5
+		double kD = 1; //2
 
-		double currentRotation = Inertial.get_rotation();
-
-		while(error > 0.1 || error < -0.1){ //Was -1
-			error = (targetTheta - GPSSensor.get_heading());
+		while((error < -0.2 || error > 0.2) && counter < 800){ //Was -0.1
+			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
         error = error + 360;
@@ -47,7 +47,6 @@ void turnPID(double targetTheta) {
       else if(error > 180){
         error = error - 360;
       }
-			pros::lcd::print(4, "error is %.3f", error);
 			double derivative = error - prevError;
 			prevError = error;
 			integral = integral + error;
@@ -64,7 +63,8 @@ void turnPID(double targetTheta) {
 			RF.move_velocity(-power);
       RM.move_velocity(-power);
 			RB.move_velocity(-power);
-			pros::delay(10);
+      counter ++;
+			pros::delay(5);
 		}
 		LF.move_velocity(0);
 		LB.move_velocity(0);
@@ -80,9 +80,10 @@ void goForwardPID(double distance){
 	double integral = 0;
 	double prevError = 0;
 	double power = 1;
+  double counter = 0;
 	double kP = 18; //18
 	double kD = 12.5; //12.5
-	double kI = 0.5; //18
+	double kI = 0.07; //0.1
 
   //current motor values
   double LFcurrent = LF.get_position() * CONVERSION_FACTOR;
@@ -92,7 +93,7 @@ void goForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while (error > 0 || error < -1){
+	while ((error > 0.1 || error < -0.1) && counter < 300){
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
@@ -116,6 +117,7 @@ void goForwardPID(double distance){
 		}
 		power = error*kP + derivative*kD + integral*kI;
 	  forwardVelocity(power);
+    counter ++;
 		pros::delay(15);
 	}
   stop1();
@@ -141,6 +143,7 @@ void moveToPoint(double x, double y){
   double forwardDistance = getLength(x, y);
 
   turnPID(targetAngle);
+  pros::delay(100);
   goForwardPID(forwardDistance);
 }
 

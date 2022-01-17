@@ -30,11 +30,12 @@
  extern void CenterBanner();
 
 void autonomous() {
+  pros::lcd::print(2, "running auton");
   //pros::delay(1000);
 	//turnPID(45);
-  //goForwardPID(20);
+  goForwardPID(-30);
 
-
+/*
 	switch(selection) {
     case 0 :
           pros::lcd::print(4, "Script#: %d\n", selection);
@@ -65,5 +66,6 @@ void autonomous() {
              // does the case of '0' is in essence the defualt.
           break;
   }
-  
+  */
+
 }

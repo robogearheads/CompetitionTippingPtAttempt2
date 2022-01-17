@@ -113,6 +113,7 @@ void WinPlatform (){
 }
 
 void CenterTable(){
+	Claw.set_value(false);
   driveForwardFast();
   pros::delay(1200);
   stop();
@@ -125,6 +126,7 @@ void CenterTable(){
 }
 
 void CenterBanner(){
+	Claw.set_value(false);
 	driveForwardFast();
   pros::delay(1200);
   stop();
