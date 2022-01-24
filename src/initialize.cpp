@@ -4,7 +4,7 @@
 #include "init.h"
 
 // array fo scripts descriptions/names displayed in selection menu
-const char* titles[] = {"Win Triangle", "Win Platform", "Center Table", "Center Banner"};
+const char* titles[] = {"Win Triangle", "Win Platform", "Center Table", "Center Banner", "Banner 2", "Table 2", "Skills"};
 
 int selection;													// Select script to run
 unsigned int scriptNumber = 0;					// scriptNumber which will be passed
@@ -74,6 +74,7 @@ void on_right_button() {
  */
 void initialize() {
   pros::lcd::initialize();
+
 }
 
 /**
@@ -94,6 +95,7 @@ void disabled() {}
  */
 void competition_initialize() {
   pros::lcd::set_text(1, "Autonomous Mode Select");
+
 
   // Write script 0 selection as first choice to screen
 	if (scriptNumber == 0) {

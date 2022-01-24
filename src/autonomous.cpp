@@ -28,12 +28,14 @@
  extern void WinTriangle();
  extern void CenterTable();
  extern void CenterBanner();
+ extern void Banner2();
+ extern void Table2();
+ extern void Skills();
 
 void autonomous() {
-  //pros::delay(1000);
-	//turnPID(45);
-  //goForwardPID(20);
-
+  pros::lcd::print(2, "running auton");
+  
+  pros::delay(500);
 
 	switch(selection) {
     case 0 :
@@ -60,10 +62,29 @@ void autonomous() {
              CenterBanner();
           break;
 
+      case 4 :
+             pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              Banner2();
+          break;
+
+      case 5 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              Table2();
+          break;
+
+      case 6 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              Skills();
+          break;
+
     default :
              // this should never happen as selection is alwasy inialized as 0
              // does the case of '0' is in essence the defualt.
           break;
   }
-  
+
+
 }

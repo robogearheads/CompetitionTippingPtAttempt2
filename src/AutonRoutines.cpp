@@ -1,4 +1,3 @@
-
 #include "main.h"
 
 #include "setup/control/base.h"
@@ -6,6 +5,8 @@
 #include "setup/control/lifts.h"
 
 #include "setup/util/misc.h"
+
+#include "setup/util/MovementFunctions.h"
 
 void driveForward(){
 	LF.move_velocity(50);
@@ -113,6 +114,7 @@ void WinPlatform (){
 }
 
 void CenterTable(){
+	Claw.set_value(false);
   driveForwardFast();
   pros::delay(1200);
   stop();
@@ -125,6 +127,7 @@ void CenterTable(){
 }
 
 void CenterBanner(){
+	Claw.set_value(false);
 	driveForwardFast();
   pros::delay(1200);
   stop();
@@ -134,4 +137,112 @@ void CenterBanner(){
   driveBack(195);
   pros::delay(1200);
   stop();
+}
+
+void Banner2(){
+	pros::Task lift(liftPID);
+	Claw.set_value(false);
+	goForwardPID(-49);
+	BottomClaw.set_value(true);
+	goForwardPID(8.5);
+	turnPID(160);
+	goForwardPID(30);
+	Claw.set_value(true);
+	pros::delay(500);
+	liftHeight = 500;
+	goForwardPID(-44);
+	turnPID(90);
+	goForwardPID(-35);
+}
+
+void Table2(){
+	//pros::Task lift(liftPID);
+	Claw.set_value(false);
+	goForwardPID(-48);
+	BottomClaw.set_value(true);
+	goForwardPID(26);
+	turnPID(132);
+	goForwardPID(45);
+	Claw.set_value(true);
+	pros::delay(200);
+	liftHeight = 500;
+	goForwardPID(-60);
+}
+
+void Skills(){
+	pros::Task lift(liftPID);
+	//liftHeight = -185;
+	//Grab alliance goal and get out of corner
+	Claw.set_value(false);
+	BottomClaw.set_value(true);
+	turnPID(50);
+	//liftHeight = -5;
+	goForwardPID(20);
+	turnPID(110);
+	goForwardPID(45);
+	pros::delay(500);
+
+	//Get first neutral goal
+	Claw.set_value(true);
+	liftHeight = 800;
+	pros::delay(500);
+
+	//Go to bridge and score
+	moveToPoint(1.1176, 0.2032);
+	liftHeight = 500;
+	pros::delay(500);
+	Claw.set_value(false);
+	pros::delay(1000);
+
+	//Spin around, drop alliance goal, pick up other alliance goal
+	goForwardPID(-11);
+	pros::delay(500);
+	turnPID(0);
+	pros::delay(500);
+	BottomClaw.set_value(false);
+	pros::delay(500);
+	liftHeight = 0;
+	goForwardPID(9);
+	pros::delay(100);
+	turnPID(180);
+	pros::delay(100);
+	goForwardPID(-26);
+	BottomClaw.set_value(true);
+	pros::delay(500);
+	//turnPID(180);
+	goForwardPID(38);
+	Claw.set_value(true);
+
+	//Raise arm, score goal
+	goForwardPID(-9);
+	liftHeight = 620;
+	pros::delay(1000);
+	turnPID(110);
+	goForwardPID(15);
+	turnPID(120);
+	Claw.set_value(false);
+
+	//Back up, drive to, and pick up next goal
+	goForwardPID(-10);
+	liftHeight = 0;
+	pros::delay(500);
+	moveToPoint(0.9144, -1.0922);
+	goForwardPID(-5);
+	pros::delay(500);
+	moveToPoint(0.1524, -0.9652);
+	Claw.set_value(true);
+
+	//Align and climb
+	moveToPoint(-0.9144, GPSSensor.get_status().y);
+	turnPID(40);
+	goForwardPID(-38);
+	turnPID(-8);
+	liftHeight = 650;
+	pros::delay(1300);
+	goForwardPID(13);
+	liftHeight = 0;
+	turnPID(-10);
+	pros::delay(1000);
+
+	balancePID();
 }

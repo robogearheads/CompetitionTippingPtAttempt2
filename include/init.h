@@ -3,7 +3,7 @@
 
 #include "api.h"
 
-#define NUM_SCRIPTS 4										// Number of autonomous scripts
+#define NUM_SCRIPTS 7										// Number of autonomous scripts
 
 // function stubs
 void on_left_button();
