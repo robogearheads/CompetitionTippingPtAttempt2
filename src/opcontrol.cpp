@@ -8,7 +8,7 @@
 #include "setup/util/MovementFunctions.h"
 
 void opcontrol() {
-	//pros::Task lift(liftPID);
+	
 
 	//Setting brake modes
 	LF.set_brake_mode(MOTOR_BRAKE_COAST);

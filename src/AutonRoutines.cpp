@@ -121,6 +121,7 @@ void CenterTable(){
   pros::delay(750);
   Claw.set_value(true);
   pros::delay(100);
+	liftHeight = 500;
 	driveBack(185);
   pros::delay(1200);
   stop();
@@ -134,19 +135,20 @@ void CenterBanner(){
   pros::delay(750);
   Claw.set_value(true);
   pros::delay(100);
+	liftHeight = 500;
   driveBack(195);
   pros::delay(1200);
   stop();
 }
 
 void Banner2(){
-	pros::Task lift(liftPID);
+	//pros::Task lift(liftPID);
 	Claw.set_value(false);
 	goForwardPID(-49);
 	BottomClaw.set_value(true);
 	goForwardPID(8.5);
 	turnPID(160);
-	goForwardPID(30);
+	goForwardPID(34);
 	Claw.set_value(true);
 	pros::delay(500);
 	liftHeight = 500;
@@ -162,15 +164,15 @@ void Table2(){
 	BottomClaw.set_value(true);
 	goForwardPID(26);
 	turnPID(132);
-	goForwardPID(45);
+	goForwardPID(42);
 	Claw.set_value(true);
 	pros::delay(200);
 	liftHeight = 500;
-	goForwardPID(-60);
+	goForwardPID(-57);
 }
 
 void Skills(){
-	pros::Task lift(liftPID);
+	//pros::Task lift(liftPID);
 	//liftHeight = -185;
 	//Grab alliance goal and get out of corner
 	Claw.set_value(false);
@@ -230,6 +232,7 @@ void Skills(){
 	goForwardPID(-5);
 	pros::delay(500);
 	moveToPoint(0.1524, -0.9652);
+	pros::delay(500);
 	Claw.set_value(true);
 
 	//Align and climb

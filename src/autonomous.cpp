@@ -34,8 +34,8 @@
 
 void autonomous() {
   pros::lcd::print(2, "running auton");
-  
-  pros::delay(500);
+  pros::Task lift(liftPID);
+  //pros::delay(500);
 
 	switch(selection) {
     case 0 :
@@ -85,6 +85,7 @@ void autonomous() {
              // does the case of '0' is in essence the defualt.
           break;
   }
+  lift.remove();
 
 
 }
