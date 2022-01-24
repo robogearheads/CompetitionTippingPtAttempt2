@@ -154,11 +154,11 @@ void balancePID() {
 	double prevError = 0;
 	double power = 1;
 
-	double kP = 13;
-	double kD = 2.7;
+	double kP = 3.5;
+	double kD = 3;
 
   //Start going forward, wait until it starts climbing
-  while(Inertial.get_pitch() < 5 && Inertial.get_pitch() > -5){
+  while(Inertial.get_pitch() < 20 && Inertial.get_pitch() > -20){
     forwardVelocity(100);
   }
   stop1();
@@ -166,10 +166,16 @@ void balancePID() {
   //Climbing PD
   while(true){
     error = Inertial.get_pitch();
+    if(Inertial.get_pitch() > 10 && Inertial.get_pitch() < 20){
+      error = error - 38;
+    }
+    else if(Inertial.get_pitch() < -10 && Inertial.get_pitch() > -20){
+      error = error + 38;
+    }
     double derivative = error - prevError;
 		prevError = error;
 		power = error*kP + derivative*kD;
     forwardVelocity(power);
-		pros::delay(25);
+		pros::delay(15);
 	}
 }

@@ -20,5 +20,8 @@ void liftPID(){
 		power = error*kP;
     FrontLift.move_velocity(power);
 		pros::delay(25);
+
+    pros::lcd::print(0, "Lift Height is %f", liftHeight);
+    pros::lcd::print(7, "Actual Height is %f", FrontLift.get_position());
   }
 }

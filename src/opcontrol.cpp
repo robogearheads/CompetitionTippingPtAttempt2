@@ -8,7 +8,7 @@
 #include "setup/util/MovementFunctions.h"
 
 void opcontrol() {
-	pros::Task lift(liftPID);
+	//pros::Task lift(liftPID);
 
 	//Setting brake modes
 	LF.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -27,7 +27,7 @@ void opcontrol() {
     LB.move(controller.get_analog(ANALOG_LEFT_Y));
     RF.move(controller.get_analog(ANALOG_RIGHT_Y));
     RB.move(controller.get_analog(ANALOG_RIGHT_Y));
-/*
+
     //Lifts
     if(controller.get_digital(DIGITAL_R1)){
       FrontLift.move_velocity(100);
@@ -38,7 +38,7 @@ void opcontrol() {
     else{
       FrontLift.move_velocity(0);
     }
-*/
+
 		//Back lift
 		if(controller.get_digital(DIGITAL_L1)){
       BackLift.move_velocity(100);
@@ -72,6 +72,7 @@ void opcontrol() {
 			turnPID(90);
 			goForwardPID(48);
 */
+/*
 			//Grab alliance goal and get out of corner
 			Claw.set_value(false);
 			BottomClaw.set_value(true);
@@ -84,6 +85,7 @@ void opcontrol() {
 			//Get first neutral goal
 			Claw.set_value(true);
 			liftHeight = 700;
+			pros::delay(500);
 
 			//Go to bridge and score
 			moveToPoint(1.1176, 0.2032);
@@ -122,21 +124,25 @@ void opcontrol() {
 			//Back up, drive to, and pick up next goal
 			goForwardPID(-7);
 			liftHeight = 0;
+			pros::delay(500);
 			moveToPoint(GPSSensor.get_status().x, -1.0922);
-			goForwardPID(-4);
-			moveToPoint(0.1524, -0.9144);
+			goForwardPID(-5);
+			pros::delay(500);
+			moveToPoint(0.1524, -0.9652);
 			Claw.set_value(true);
 
 			//Align and climb
 			moveToPoint(-0.9144, GPSSensor.get_status().y);
 			turnPID(40);
-			goForwardPID(-34);
-			turnPID(-5);
+			goForwardPID(-38);
+			turnPID(-8);
 			liftHeight = 650;
 			pros::delay(1300);
-			goForwardPID(22);
+			goForwardPID(14);
 			liftHeight = 0;
-			//balancePID();
+			turnPID(-1);
+*/
+			balancePID();
     }
     //GPS Sensor - printing values
     double xpos = GPSSensor.get_status().x;
