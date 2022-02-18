@@ -115,10 +115,10 @@ void WinPlatform (){
 
 void CenterTable(){
 	Claw.set_value(false);
-  driveForwardFast();
-  pros::delay(1200);
+  forwardVelocity(200);
+  pros::delay(1500);
   stop();
-  pros::delay(750);
+
   Claw.set_value(true);
   pros::delay(100);
 	liftHeight = 500;
@@ -160,15 +160,15 @@ void Banner2(){
 void Table2(){
 	//pros::Task lift(liftPID);
 	Claw.set_value(false);
-	goForwardPID(-48);
+	fastGoForwardPID(-48);
 	BottomClaw.set_value(true);
-	goForwardPID(26);
+	fastGoForwardPID(26);
 	turnPID(132);
-	goForwardPID(42);
+	fastGoForwardPID(42);
 	Claw.set_value(true);
 	pros::delay(200);
 	liftHeight = 500;
-	goForwardPID(-57);
+	fastGoForwardPID(-57);
 }
 
 void Skills(){

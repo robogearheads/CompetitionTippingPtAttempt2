@@ -8,8 +8,6 @@
 #include "setup/util/MovementFunctions.h"
 
 void opcontrol() {
-
-
 	//Setting brake modes
 	LF.set_brake_mode(MOTOR_BRAKE_COAST);
 	LB.set_brake_mode(MOTOR_BRAKE_COAST);
@@ -20,7 +18,7 @@ void opcontrol() {
 	BackLift.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	Tilter.set_brake_mode(MOTOR_BRAKE_HOLD);
-
+	
 	while (true) {
 		//Drive Code
     LF.move(controller.get_analog(ANALOG_LEFT_Y));
@@ -64,16 +62,8 @@ void opcontrol() {
 		}
 		else if(controller.get_digital(DIGITAL_RIGHT)){
 			BottomClaw.set_value(true);
-		} //comment for no reaso
-
-		if(controller.get_digital(DIGITAL_X)){
-			RightRake.set_value(false);
-			LeftRake.set_value(false);
-		}
-		else if(controller.get_digital(DIGITAL_B)){
-			RightRake.set_value(true);
-			LeftRake.set_value(true);
-		}
+		} 
+		
     //GPS Sensor - printing values
     double xpos = GPSSensor.get_status().x;
     double ypos = GPSSensor.get_status().y;
