@@ -115,12 +115,13 @@ void WinPlatform (){
 
 void CenterTable(){
 	Claw.set_value(false);
-  driveForwardFast();
-  pros::delay(1200);
+  forwardVelocity(200);
+  pros::delay(1500);
   stop();
-  pros::delay(750);
+
   Claw.set_value(true);
   pros::delay(100);
+	liftHeight = 500;
 	driveBack(185);
   pros::delay(1200);
   stop();
@@ -134,19 +135,20 @@ void CenterBanner(){
   pros::delay(750);
   Claw.set_value(true);
   pros::delay(100);
+	liftHeight = 500;
   driveBack(195);
   pros::delay(1200);
   stop();
 }
 
 void Banner2(){
-	pros::Task lift(liftPID);
+	//pros::Task lift(liftPID);
 	Claw.set_value(false);
 	goForwardPID(-49);
 	BottomClaw.set_value(true);
 	goForwardPID(8.5);
 	turnPID(160);
-	goForwardPID(30);
+	goForwardPID(34);
 	Claw.set_value(true);
 	pros::delay(500);
 	liftHeight = 500;
@@ -158,19 +160,19 @@ void Banner2(){
 void Table2(){
 	//pros::Task lift(liftPID);
 	Claw.set_value(false);
-	goForwardPID(-48);
+	fastGoForwardPID(-48);
 	BottomClaw.set_value(true);
-	goForwardPID(26);
+	fastGoForwardPID(26);
 	turnPID(132);
-	goForwardPID(45);
+	fastGoForwardPID(42);
 	Claw.set_value(true);
 	pros::delay(200);
 	liftHeight = 500;
-	goForwardPID(-60);
+	fastGoForwardPID(-57);
 }
 
 void Skills(){
-	pros::Task lift(liftPID);
+	//pros::Task lift(liftPID);
 	//liftHeight = -185;
 	//Grab alliance goal and get out of corner
 	Claw.set_value(false);
@@ -189,7 +191,7 @@ void Skills(){
 
 	//Go to bridge and score
 	moveToPoint(1.1176, 0.2032);
-	liftHeight = 500;
+	liftHeight = 600;
 	pros::delay(500);
 	Claw.set_value(false);
 	pros::delay(1000);
@@ -204,13 +206,15 @@ void Skills(){
 	liftHeight = 0;
 	goForwardPID(9);
 	pros::delay(100);
+	backLiftHeight = -1200;
 	turnPID(180);
 	pros::delay(100);
-	goForwardPID(-26);
-	BottomClaw.set_value(true);
-	pros::delay(500);
+	goForwardPID(-28);
+	//BottomClaw.set_value(true);
+	backLiftHeight = -100;
+	pros::delay(750);
 	//turnPID(180);
-	goForwardPID(38);
+	goForwardPID(42);
 	Claw.set_value(true);
 
 	//Raise arm, score goal
@@ -218,7 +222,7 @@ void Skills(){
 	liftHeight = 620;
 	pros::delay(1000);
 	turnPID(110);
-	goForwardPID(15);
+	goForwardPID(10);
 	turnPID(120);
 	Claw.set_value(false);
 
@@ -228,21 +232,34 @@ void Skills(){
 	pros::delay(500);
 	moveToPoint(0.9144, -1.0922);
 	goForwardPID(-5);
+	backLiftHeight = -10;
+	backToPoint(1.3716, -0.8636);
+	BottomClaw.set_value(true);
 	pros::delay(500);
-	moveToPoint(0.1524, -0.9652);
+	moveToPoint(0.5588, -0.9144);
+	moveToPoint(0.1524, -0.9144); //.9652
+	pros::delay(500);
 	Claw.set_value(true);
 
 	//Align and climb
+	backLiftHeight = -150;
 	moveToPoint(-0.9144, GPSSensor.get_status().y);
 	turnPID(40);
-	goForwardPID(-38);
-	turnPID(-8);
 	liftHeight = 650;
-	pros::delay(1300);
+	goForwardPID(-36);
+	turnPID(-8);
 	goForwardPID(13);
 	liftHeight = 0;
 	turnPID(-10);
 	pros::delay(1000);
 
 	balancePID();
+}
+
+void RakeBanner(){
+
+}
+
+void RakeTable(){
+
 }

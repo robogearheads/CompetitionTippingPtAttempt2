@@ -8,4 +8,5 @@ pros::ADIDigitalOut Claw ('A', true);
 
 pros::ADIDigitalOut BottomClaw ('H');
 
+//Doesn't actually exist - but pros is being stupid
 pros::Motor Tilter(21, MOTOR_GEARSET_36, 0, MOTOR_ENCODER_DEGREES);

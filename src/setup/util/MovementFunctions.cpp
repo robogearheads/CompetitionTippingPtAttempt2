@@ -38,7 +38,7 @@ void turnPID(double targetTheta) {
 		double kI = 0; //0.5
 		double kD = 1; //2
 
-		while((error < -0.2 || error > 0.2) && counter < 800){ //Was -0.1
+		while((error < -0.25 || error > 0.25) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
@@ -147,6 +147,15 @@ void moveToPoint(double x, double y){
   goForwardPID(forwardDistance);
 }
 
+void backToPoint(double x, double y){
+  double targetAngle = getAngle (x, y);
+  double forwardDistance = getLength(x, y);
+
+  turnPID(targetAngle + 180);
+  pros::delay(100);
+  goForwardPID(-forwardDistance);
+}
+
 //Just used at the end (needs tuning)
 void balancePID() {
 	double error = 0;
@@ -178,4 +187,80 @@ void balancePID() {
     forwardVelocity(power);
 		pros::delay(15);
 	}
+}
+
+void fastGoForwardPID(double distance){
+  double error = 1;
+	double integral = 0;
+	double prevError = 0;
+	double power = 1;
+  double counter = 0;
+	double kP = 22; //18
+	double kD = 12.5; //12.5
+	double kI = 0.07; //0.1
+
+  //current motor values
+  double LFcurrent = LF.get_position() * CONVERSION_FACTOR;
+  double LMcurrent = LM.get_position() * CONVERSION_FACTOR;
+  double LBcurrent = LB.get_position() * CONVERSION_FACTOR;
+  double RFcurrent = RF.get_position() * CONVERSION_FACTOR;
+  double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
+  double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
+
+	while ((error > 0.1 || error < -0.1) && counter < 300){
+    //forward distances (motors separate)
+    double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double LBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+
+    double avgDistanceTraveled = (LFdistance + LMdistance + LBdistance + RFdistance + RMdistance + RBdistance)/6;
+
+		error = distance - avgDistanceTraveled;
+		pros::lcd::print(4, "error is %.3f", error);
+		double derivative = error - prevError;
+		prevError = error;
+		integral = integral + error;
+		if (error < 0){
+			integral = 0;
+		}
+		if (error > (0.5*distance)){
+			integral = 0;
+		}
+		power = error*kP + derivative*kD + integral*kI;
+	  forwardVelocity(power);
+    counter ++;
+		pros::delay(15);
+	}
+  stop1();
+}
+
+void DriverBalancePID(){
+  double error = 0;
+	double derivative = 0;
+	double prevError = 0;
+	double power = 1;
+
+	double kP = 3.5;
+	double kD = 3;
+
+  //Climbing PD
+  while(true){
+    error = Inertial.get_pitch();
+    double derivative = error - prevError;
+		prevError = error;
+		power = error*kP + derivative*kD;
+    forwardVelocity(power);
+		pros::delay(15);
+	}
+}
+
+void driverMovement(){
+  //Drive Code
+  LF.move(controller.get_analog(ANALOG_LEFT_Y));
+  LB.move(controller.get_analog(ANALOG_LEFT_Y));
+  RF.move(controller.get_analog(ANALOG_RIGHT_Y));
+  RB.move(controller.get_analog(ANALOG_RIGHT_Y));
 }

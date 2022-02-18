@@ -31,11 +31,14 @@
  extern void Banner2();
  extern void Table2();
  extern void Skills();
+ extern void RakeTable();
+ extern void RakeBanner();
 
 void autonomous() {
   pros::lcd::print(2, "running auton");
-  
-  pros::delay(500);
+  pros::Task lift(liftPID);
+  pros::Task backLift(backLiftPID);
+  //pros::delay(500);
 
 	switch(selection) {
     case 0 :
@@ -80,11 +83,24 @@ void autonomous() {
               Skills();
           break;
 
+      case 7 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              RakeBanner();
+          break;
+
+      case 8 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              RakeTable();
+          break;
+
     default :
              // this should never happen as selection is alwasy inialized as 0
              // does the case of '0' is in essence the defualt.
           break;
   }
+  lift.remove();
 
 
 }
