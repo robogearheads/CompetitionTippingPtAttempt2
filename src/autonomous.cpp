@@ -31,10 +31,13 @@
  extern void Banner2();
  extern void Table2();
  extern void Skills();
+ extern void RakeTable();
+ extern void RakeBanner();
 
 void autonomous() {
   pros::lcd::print(2, "running auton");
   pros::Task lift(liftPID);
+  pros::Task backLift(backLiftPID);
   //pros::delay(500);
 
 	switch(selection) {
@@ -78,6 +81,18 @@ void autonomous() {
               pros::lcd::print(4, "Script#: %d\n", selection);
               pros::lcd::print(5, titles[selection]);
               Skills();
+          break;
+
+      case 7 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              RakeBanner();
+          break;
+
+      case 8 :
+              pros::lcd::print(4, "Script#: %d\n", selection);
+              pros::lcd::print(5, titles[selection]);
+              RakeTable();
           break;
 
     default :

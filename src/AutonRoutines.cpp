@@ -191,7 +191,7 @@ void Skills(){
 
 	//Go to bridge and score
 	moveToPoint(1.1176, 0.2032);
-	liftHeight = 500;
+	liftHeight = 600;
 	pros::delay(500);
 	Claw.set_value(false);
 	pros::delay(1000);
@@ -206,13 +206,15 @@ void Skills(){
 	liftHeight = 0;
 	goForwardPID(9);
 	pros::delay(100);
+	backLiftHeight = -1200;
 	turnPID(180);
 	pros::delay(100);
-	goForwardPID(-26);
-	BottomClaw.set_value(true);
-	pros::delay(500);
+	goForwardPID(-28);
+	//BottomClaw.set_value(true);
+	backLiftHeight = -100;
+	pros::delay(750);
 	//turnPID(180);
-	goForwardPID(38);
+	goForwardPID(42);
 	Claw.set_value(true);
 
 	//Raise arm, score goal
@@ -220,7 +222,7 @@ void Skills(){
 	liftHeight = 620;
 	pros::delay(1000);
 	turnPID(110);
-	goForwardPID(15);
+	goForwardPID(10);
 	turnPID(120);
 	Claw.set_value(false);
 
@@ -230,22 +232,34 @@ void Skills(){
 	pros::delay(500);
 	moveToPoint(0.9144, -1.0922);
 	goForwardPID(-5);
+	backLiftHeight = -10;
+	backToPoint(1.3716, -0.8636);
+	BottomClaw.set_value(true);
 	pros::delay(500);
-	moveToPoint(0.1524, -0.9652);
+	moveToPoint(0.5588, -0.9144);
+	moveToPoint(0.1524, -0.9144); //.9652
 	pros::delay(500);
 	Claw.set_value(true);
 
 	//Align and climb
+	backLiftHeight = -150;
 	moveToPoint(-0.9144, GPSSensor.get_status().y);
 	turnPID(40);
-	goForwardPID(-38);
-	turnPID(-8);
 	liftHeight = 650;
-	pros::delay(1300);
+	goForwardPID(-36);
+	turnPID(-8);
 	goForwardPID(13);
 	liftHeight = 0;
 	turnPID(-10);
 	pros::delay(1000);
 
 	balancePID();
+}
+
+void RakeBanner(){
+
+}
+
+void RakeTable(){
+
 }
