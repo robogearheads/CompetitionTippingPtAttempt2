@@ -233,7 +233,7 @@ void Skills(){
 	moveToPoint(0.9144, -1.0922);
 	goForwardPID(-5);
 	backLiftHeight = -10;
-	backToPoint(1.3716, -0.8636);
+	backToPoint(1.4224, -0.8636);
 	BottomClaw.set_value(true);
 	pros::delay(500);
 	moveToPoint(0.5588, -0.9144);

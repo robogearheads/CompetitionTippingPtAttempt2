@@ -37,7 +37,7 @@
 void autonomous() {
   pros::lcd::print(2, "running auton");
   pros::Task lift(liftPID);
-  pros::Task backLift(backLiftPID);
+  //pros::Task backLift(backLiftPID);
   //pros::delay(500);
 
 	switch(selection) {
@@ -101,6 +101,6 @@ void autonomous() {
           break;
   }
   lift.remove();
-
+  //backLift.remove();
 
 }

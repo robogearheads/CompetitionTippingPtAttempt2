@@ -38,7 +38,7 @@ void turnPID(double targetTheta) {
 		double kI = 0; //0.5
 		double kD = 1; //2
 
-		while((error < -0.25 || error > 0.25) && counter < 400){ //Was -0.2
+		while((error < -0.2 || error > 0.2) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
