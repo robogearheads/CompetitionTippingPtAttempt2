@@ -13,4 +13,4 @@ pros::Motor RB(20, MOTOR_GEARSET_18, 0, MOTOR_ENCODER_ROTATIONS),
 pros::Imu Inertial(17);
 
 //GPS Sensor
-pros::GPS GPSSensor(3, -0.1905, 0.0254);
+pros::GPS GPSSensor(3, -0.2032, 0);

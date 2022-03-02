@@ -8,6 +8,16 @@
 
 #include "setup/util/MovementFunctions.h"
 
+void WingTask(){
+	pros::delay(500);
+	LeftWing.set_value(true);
+	RightWing.set_value(true);
+	
+	while(true){
+		pros::delay(20);
+	}
+}
+
 void driveForward(){
 	LF.move_velocity(50);
 	LB.move_velocity(50);
@@ -190,7 +200,7 @@ void Skills(){
 	pros::delay(500);
 
 	//Go to bridge and score
-	moveToPoint(1.1176, 0.2032);
+	moveToPoint(1.0668, 0.1016); //1.1176 for x
 	liftHeight = 600;
 	pros::delay(500);
 	Claw.set_value(false);
@@ -201,20 +211,22 @@ void Skills(){
 	pros::delay(500);
 	turnPID(0);
 	pros::delay(500);
+	double tempX = GPSSensor.get_status().x;
+	double tempY = GPSSensor.get_status().y;
 	BottomClaw.set_value(false);
 	pros::delay(500);
 	liftHeight = 0;
 	goForwardPID(9);
 	pros::delay(100);
 	backLiftHeight = -1200;
-	turnPID(180);
+	//turnPID(180);
 	pros::delay(100);
-	goForwardPID(-28);
+	backToPoint(0.889, 1.3716);
 	//BottomClaw.set_value(true);
 	backLiftHeight = -100;
 	pros::delay(750);
 	//turnPID(180);
-	goForwardPID(42);
+	moveToPoint(tempX, tempY - 0.0762);
 	Claw.set_value(true);
 
 	//Raise arm, score goal
@@ -230,7 +242,7 @@ void Skills(){
 	goForwardPID(-10);
 	liftHeight = 0;
 	pros::delay(500);
-	moveToPoint(0.9144, -1.0922);
+	moveToPoint(0.9144, -1.1684);
 	goForwardPID(-5);
 	backLiftHeight = -10;
 	backToPoint(1.4224, -0.8636);
@@ -245,21 +257,32 @@ void Skills(){
 	backLiftHeight = -150;
 	moveToPoint(-0.9144, GPSSensor.get_status().y);
 	turnPID(40);
-	liftHeight = 650;
-	goForwardPID(-36);
+	liftHeight = 500;
+	goForwardPID(-30);
 	turnPID(-8);
 	goForwardPID(13);
 	liftHeight = 0;
 	turnPID(-10);
-	pros::delay(1000);
-
 	balancePID();
 }
 
 void RakeBanner(){
 
+	
 }
 
 void RakeTable(){
-
+	pros::Task wings(WingTask);
+	backLiftHeight = -1200;
+	fastGoForwardPID(36);
+	wings.remove();
+	LeftWing.set_value(false);
+	RightWing.set_value(false);
+	pros::delay(200);
+	fastGoForwardPID(-14);
+	LeftWing.set_value(true);
+	RightWing.set_value(true);
+	fastGoForwardPID(-7);
+	LeftWing.set_value(false);
+	RightWing.set_value(false);
 }

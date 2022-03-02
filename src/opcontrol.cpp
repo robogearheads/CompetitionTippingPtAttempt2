@@ -64,6 +64,16 @@ void opcontrol() {
 			BottomClaw.set_value(true);
 		} 
 		
+		//Wings (testing)
+		if(controller.get_digital(DIGITAL_B)){
+			LeftWing.set_value(true);
+			RightWing.set_value(true);
+		}
+		else if(controller.get_digital(DIGITAL_X)){
+			LeftWing.set_value(false);
+			RightWing.set_value(false);
+		}
+		
     //GPS Sensor - printing values
     double xpos = GPSSensor.get_status().x;
     double ypos = GPSSensor.get_status().y;
