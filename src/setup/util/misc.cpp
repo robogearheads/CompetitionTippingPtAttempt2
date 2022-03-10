@@ -40,7 +40,7 @@ void backLiftPID(){
     error = backLiftHeight - BackLift.get_position();
 		power = error*kP;
     BackLift.move_velocity(power);
-		pros::delay(25);
+		pros::delay(50);
 
     pros::lcd::print(0, "Lift Height is %f", liftHeight);
     pros::lcd::print(7, "Actual Height is %f", FrontLift.get_position());

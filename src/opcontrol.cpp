@@ -7,6 +7,9 @@
 #include "setup/util/misc.h"
 #include "setup/util/MovementFunctions.h"
 
+//extern pros::Task lift;
+//extern pros::Task backLift;
+
 void opcontrol() {
 	//Setting brake modes
 	LF.set_brake_mode(MOTOR_BRAKE_COAST);

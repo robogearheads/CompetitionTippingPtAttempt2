@@ -36,8 +36,8 @@
 
 void autonomous() {
   pros::lcd::print(2, "running auton");
-  pros::Task lift(liftPID);
-  pros::Task backLift(backLiftPID);
+  FrontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
+  BackLift.set_brake_mode(MOTOR_BRAKE_HOLD);
   //pros::delay(500);
 
 	switch(selection) {
@@ -100,7 +100,4 @@ void autonomous() {
              // does the case of '0' is in essence the defualt.
           break;
   }
-  lift.remove();
-  backLift.remove();
-
 }
