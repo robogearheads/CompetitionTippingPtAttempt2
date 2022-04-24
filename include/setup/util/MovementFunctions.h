@@ -8,6 +8,7 @@ void turnLeft(double amount);
 
 void balancePID();
 void forwardVelocity(double velocity);
+void forwardForDistance(double amount, double speed);
 
 void turnPID(double targetTheta);
 void preciseTurnPID(double targetTheta);

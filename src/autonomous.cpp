@@ -37,8 +37,6 @@
 void autonomous() {
   pros::lcd::print(2, "running auton");
   FrontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
-  BackLift.set_brake_mode(MOTOR_BRAKE_HOLD);
-  //pros::delay(500);
 
 	switch(selection) {
     case 0 :
