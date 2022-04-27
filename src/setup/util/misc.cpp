@@ -12,7 +12,7 @@ void liftPID(){
   double prevError = 0;
   double power = 0;
 
-  double kP = 1;
+  double kP = 0.1;
   double kD = 0;
 
   while(true){

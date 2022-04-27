@@ -115,32 +115,44 @@ void WinPlatform (){
 }
 
 void CenterTable(){
-	pros::Task lift(liftPID);
-	Claw.set_value(false);
-  forwardVelocity(200);
-  pros::delay(1500);
-  stop();
-
-  Claw.set_value(true);
-  pros::delay(100);
-	liftHeight = 500;
-	driveBack(185);
-  pros::delay(1200);
-  stop();
+	BackClamp.set_value(false);
+	Claw.set_value(true); //39
+  forwardForDistance(39, 195);
+  Claw.set_value(false);
+	fastGoForwardPID(-10);
+	goForwardPID(-10);
+	turnPID(-90);
+	goForwardPID(-15);
+  BackClamp.set_value(true);
+  pros::delay(500);
+	Intake.move_velocity(-500);
+	pros::delay(2000);
+	goForwardPID(30);
+  Intake.move_velocity(0);
+  BackClamp.set_value(false);
 }
 
 void CenterBanner(){
-	forwardVelocity(50);
-/*
 	pros::Task lift(liftPID);
-	Claw.set_value(false);
-	forwardForDistance(44, 50);
-  Claw.set_value(true);
+	Claw.set_value(true);
+	forwardForDistance(44, 195);
+  Claw.set_value(false);
   pros::delay(10);
 	liftHeight = 100;
-	fastGoForwardPID(-40);
-  stop();
-*/
+	fastGoForwardPID(-20);
+	goForwardPID(-30);
+	pros::delay(500);
+	goForwardPID(2);
+	turnPID(-85);
+	goForwardPID(-12.5);
+	BackClamp.set_value(true);
+	pros::delay(1000);
+	Intake.move_velocity(-500);
+	pros::delay(2000);
+	forwardForDistance(10, 50);
+	lift.remove();
+	Intake.move_velocity(0);
+	BackClamp.set_value(false);
 }
 
 void Banner2(){
@@ -160,29 +172,32 @@ void Banner2(){
 }
 
 void Table2(){
-	pros::Task lift(liftPID);
 	//pros::Task lift(liftPID);
-	Claw.set_value(false);
-	fastGoForwardPID(-47);
-	BackClamp.set_value(true);
-	fastGoForwardPID(26);
-	turnPID(132);
-	fastGoForwardPID(42);
+	//pros::Task lift(liftPID);
 	Claw.set_value(true);
-	pros::delay(200);
-	liftHeight = 200;
+	BackClamp.set_value(false);
+	fastGoForwardPID(-39);
+	pros::delay(75);
+	BackClamp.set_value(true);
+	fastGoForwardPID(22);
+	turnPID(134);
+	fastGoForwardPID(42);
+	Claw.set_value(false);
+	pros::delay(100);
 	fastGoForwardPID(-57);
+	BackClamp.set_value(false);
 	pros::delay(300);
-	liftHeight = 0;
-	goForwardPID(10);
+	goForwardPID(20);
 	pros::delay(500);
 	turnPID(93);
-	goForwardPID(-16);
+	goForwardPID(-10);
+	BackClamp.set_value(true);
 	pros::delay(400);
+	Intake.move_velocity(-500);
 	goForwardPID(15);
-	lift.remove();
-	turnPID(130);
-
+	pros::delay(1000);
+	Intake.move_velocity(0);
+	BackClamp.set_value(false);
 }
 
 void Skills(){

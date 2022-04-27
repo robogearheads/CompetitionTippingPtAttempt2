@@ -34,7 +34,7 @@ void turnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
-		double kP = 4; //4
+		double kP = 2; //4
 		double kI = 0; //0.5
 		double kD = 1; //2
 
@@ -132,7 +132,7 @@ void goForwardPID(double distance){
 	double prevError = 0;
 	double power = 1;
   double counter = 0;
-	double kP = 18; //18
+	double kP = 12; //18
 	double kD = 12.5; //12.5
 	double kI = 0.07; //0.1
 
