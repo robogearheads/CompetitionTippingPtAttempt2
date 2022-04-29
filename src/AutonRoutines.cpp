@@ -9,9 +9,12 @@
 #include "setup/util/MovementFunctions.h"
 
 void WingTask(){
-	pros::delay(500);
+	pros::delay(200);
 	LeftWing.set_value(true);
 	RightWing.set_value(true);
+	pros::delay(700);
+	LeftWing.set_value(false);
+	RightWing.set_value(false);
 
 	while(true){
 		pros::delay(20);
@@ -101,26 +104,31 @@ void WinTriangle(){
   stop();
 }
 
-void WinPlatform (){
-  //Bring Arm Down
-
-
-  driveBack(50);
-  pros::delay(2000);
-  stop();
-  pros::delay(1000);
-  driveForward();
-  pros::delay(2000);
-  stop();
+void CenterMiddle (){
+	Claw.set_value(true);
+	BackClamp.set_value(false);
+	forwardForDistance(57, 195);
+	Claw.set_value(false);
+	fastGoForwardPID(-20);
+	goForwardPID(-19);
+	turnPID(-90);
+	goForwardPID(-31);
+	BackClamp.set_value(true);
+	Intake.move_velocity(-500);
+	forwardForDistance(30, 50);
+	pros::delay(1000);
+	Intake.move_velocity(0);
+	BackClamp.set_value(false);
+	forwardForDistance(5, 50);
 }
 
 void CenterTable(){
 	BackClamp.set_value(false);
 	Claw.set_value(true); //39
-  forwardForDistance(39, 195);
+  forwardForDistance(40, 195);
   Claw.set_value(false);
 	fastGoForwardPID(-10);
-	goForwardPID(-10);
+	goForwardPID(-11);
 	turnPID(-90);
 	goForwardPID(-15);
   BackClamp.set_value(true);
@@ -130,6 +138,8 @@ void CenterTable(){
 	goForwardPID(30);
   Intake.move_velocity(0);
   BackClamp.set_value(false);
+	pros::delay(1000);
+	forwardForDistance(5, 50);
 }
 
 void CenterBanner(){
@@ -153,6 +163,7 @@ void CenterBanner(){
 	lift.remove();
 	Intake.move_velocity(0);
 	BackClamp.set_value(false);
+	forwardForDistance(5, 50);
 }
 
 void Banner2(){
@@ -172,32 +183,28 @@ void Banner2(){
 }
 
 void Table2(){
-	//pros::Task lift(liftPID);
-	//pros::Task lift(liftPID);
-	Claw.set_value(true);
 	BackClamp.set_value(false);
-	fastGoForwardPID(-39);
-	pros::delay(75);
-	BackClamp.set_value(true);
-	fastGoForwardPID(22);
-	turnPID(134);
-	fastGoForwardPID(42);
+	Claw.set_value(true); //39
+  forwardForDistance(41, 195);
+  Claw.set_value(false);
+	fastGoForwardPID(-21.5);
+	Claw.set_value(true);
+	goForwardPID(-14);
+	turnPID(-43);
+	goForwardPID(52);
 	Claw.set_value(false);
 	pros::delay(100);
-	fastGoForwardPID(-57);
-	BackClamp.set_value(false);
-	pros::delay(300);
-	goForwardPID(20);
-	pros::delay(500);
-	turnPID(93);
-	goForwardPID(-10);
+	goForwardPID(-41);
+	turnPID(-90);
+	goForwardPID(-26);
 	BackClamp.set_value(true);
-	pros::delay(400);
+	pros::delay(500);
 	Intake.move_velocity(-500);
-	goForwardPID(15);
-	pros::delay(1000);
+	goForwardPID(30);
 	Intake.move_velocity(0);
 	BackClamp.set_value(false);
+	pros::delay(1000);
+	forwardForDistance(5, 50);
 }
 
 void Skills(){
@@ -293,35 +300,11 @@ void RakeBanner(){
 
 void RakeTable(){
 	pros::Task wings(WingTask);
-	fastGoForwardPID(39); //was 34
-	wings.remove();
+	fastGoForwardPID(38); //was 34
 	pros::delay(75);
 	LeftWing.set_value(false);
 	RightWing.set_value(false);
 	pros::delay(150); //was 450
-	fastGoForwardPID(-30); //was -25
-	/*
-	LeftWing.set_value(true);
-	RightWing.set_value(true);
-	pros::delay(200);
-	fastGoForwardPID(-5);
-	//pros::delay(750);
-	LeftWing.set_value(false);
-	RightWing.set_value(false);
-	pros::delay(100);
-	goForwardPID(16);
-	pros::delay(200);
-	preciseTurnPID(-94);
-	goForwardPID(-36);
-	pros::delay(650);
-	goForwardPID(33.5);
-	turnPID(-52);
-	Claw.set_value(false);
-	goForwardPID(10);
-	Claw.set_value(true);
-	//goForwardPID(12);
-	turnPID(-110);
-	goForwardPID(6);
-`*/
-	//goForwardPID(-16);
+	goForwardPID(-35);
+	wings.remove();
 }

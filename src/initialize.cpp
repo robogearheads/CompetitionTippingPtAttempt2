@@ -4,7 +4,7 @@
 #include "init.h"
 
 // array fo scripts descriptions/names displayed in selection menu
-const char* titles[] = {"Win Triangle", "Win Platform", "Center Table", "Center Banner", "Banner 2", "Table 2", "Skills", "Rake Banner", "Rake Table"};
+const char* titles[] = {"Center Table", "Center Middle", "Center Banner", "Table 2", "Rake Table", "Skills"};
 
 int selection;													// Select script to run
 unsigned int scriptNumber = 0;					// scriptNumber which will be passed

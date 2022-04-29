@@ -38,7 +38,7 @@ void turnPID(double targetTheta) {
 		double kI = 0; //0.5
 		double kD = 1; //2
 
-		while((error < -0.1 || error > 0.1) && counter < 400){ //Was -0.2
+		while((error < -0.07 || error > 0.07) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
@@ -144,7 +144,7 @@ void goForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.1 || error < -0.1) && counter < 300){
+	while ((error > 0.1 || error < -0.1) && counter < 200){
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
