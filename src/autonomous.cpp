@@ -24,75 +24,52 @@
  extern char* titles[];
 
  // functions are located autoroutine.cpp
- extern void WinPlatform();
- extern void WinTriangle();
+ extern void CenterMiddle();
  extern void CenterTable();
  extern void CenterBanner();
- extern void Banner2();
  extern void Table2();
  extern void Skills();
  extern void RakeTable();
- extern void RakeBanner();
 
 void autonomous() {
   pros::lcd::print(2, "running auton");
-  pros::Task lift(liftPID);
-  pros::Task backLift(backLiftPID);
-  //pros::delay(500);
+  FrontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
 
 	switch(selection) {
-    case 0 :
+      case 0 :
           pros::lcd::print(4, "Script#: %d\n", selection);
           pros::lcd::print(5, titles[selection]);
-          WinTriangle();
+          CenterTable();
        break;
 
        case 1 :
              pros::lcd::print(4, "Script#: %d\n", selection);
              pros::lcd::print(5, titles[selection]);
-             WinPlatform();
+             CenterMiddle();
           break;
 
        case 2 :
              pros::lcd::print(4, "Script#: %d\n", selection);
              pros::lcd::print(5, titles[selection]);
-             CenterTable();
+             CenterBanner();
           break;
 
       case 3 :
              pros::lcd::print(4, "Script#: %d\n", selection);
              pros::lcd::print(5, titles[selection]);
-             CenterBanner();
+             Table2();
           break;
 
       case 4 :
              pros::lcd::print(4, "Script#: %d\n", selection);
               pros::lcd::print(5, titles[selection]);
-              Banner2();
+              RakeTable();
           break;
 
       case 5 :
               pros::lcd::print(4, "Script#: %d\n", selection);
               pros::lcd::print(5, titles[selection]);
-              Table2();
-          break;
-
-      case 6 :
-              pros::lcd::print(4, "Script#: %d\n", selection);
-              pros::lcd::print(5, titles[selection]);
               Skills();
-          break;
-
-      case 7 :
-              pros::lcd::print(4, "Script#: %d\n", selection);
-              pros::lcd::print(5, titles[selection]);
-              RakeBanner();
-          break;
-
-      case 8 :
-              pros::lcd::print(4, "Script#: %d\n", selection);
-              pros::lcd::print(5, titles[selection]);
-              RakeTable();
           break;
 
     default :
@@ -100,7 +77,4 @@ void autonomous() {
              // does the case of '0' is in essence the defualt.
           break;
   }
-  lift.remove();
-
-
 }

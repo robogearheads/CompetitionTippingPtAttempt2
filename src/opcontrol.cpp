@@ -7,24 +7,27 @@
 #include "setup/util/misc.h"
 #include "setup/util/MovementFunctions.h"
 
+//extern pros::Task lift;
+
 void opcontrol() {
 	//Setting brake modes
 	LF.set_brake_mode(MOTOR_BRAKE_COAST);
+	LM.set_brake_mode(MOTOR_BRAKE_COAST);
 	LB.set_brake_mode(MOTOR_BRAKE_COAST);
 	RF.set_brake_mode(MOTOR_BRAKE_COAST);
+	RM.set_brake_mode(MOTOR_BRAKE_COAST);
 	RB.set_brake_mode(MOTOR_BRAKE_COAST);
 
 	FrontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
-	BackLift.set_brake_mode(MOTOR_BRAKE_HOLD);
 
-	Tilter.set_brake_mode(MOTOR_BRAKE_HOLD);
-	
 	while (true) {
 		//Drive Code
     LF.move(controller.get_analog(ANALOG_LEFT_Y));
+		LM.move(controller.get_analog(ANALOG_LEFT_Y));
     LB.move(controller.get_analog(ANALOG_LEFT_Y));
-    RF.move(controller.get_analog(ANALOG_RIGHT_Y));
-    RB.move(controller.get_analog(ANALOG_RIGHT_Y));
+		RF.move(controller.get_analog(ANALOG_RIGHT_Y));
+		RM.move(controller.get_analog(ANALOG_RIGHT_Y));
+		RB.move(controller.get_analog(ANALOG_RIGHT_Y));
 
     //Lifts
     if(controller.get_digital(DIGITAL_R1)){
@@ -37,33 +40,43 @@ void opcontrol() {
       FrontLift.move_velocity(0);
     }
 
-		//Back lift
+		//Intake
 		if(controller.get_digital(DIGITAL_L1)){
-      BackLift.move_velocity(100);
+      Intake.move_velocity(500);
     }
     else if(controller.get_digital(DIGITAL_L2)){
-      BackLift.move_velocity(-100);
+      Intake.move_velocity(-500);
     }
     else{
-      BackLift.move_velocity(0);
+      Intake.move_velocity(0);
     }
 
 		//Pneumatic Claw
-		if(controller.get_digital(DIGITAL_UP)){
+		if(controller.get_digital(DIGITAL_DOWN)){
 			Claw.set_value(false);
 		}
-		else if(controller.get_digital(DIGITAL_DOWN)){
+		else if(controller.get_digital(DIGITAL_UP)){
 			Claw.set_value(true);
 		}
 
-		//Bottom Pneumatic Claw
+		//Back Clamp
 		if(controller.get_digital(DIGITAL_LEFT)){
-			BottomClaw.set_value(false);
+			BackClamp.set_value(false);
 		}
 		else if(controller.get_digital(DIGITAL_RIGHT)){
-			BottomClaw.set_value(true);
-		} 
-		
+			BackClamp.set_value(true);
+		}
+
+		//Wings (testing)
+		if(controller.get_digital(DIGITAL_B)){
+			LeftWing.set_value(true);
+			RightWing.set_value(true);
+		}
+		else if(controller.get_digital(DIGITAL_X)){
+			LeftWing.set_value(false);
+			RightWing.set_value(false);
+		}
+
     //GPS Sensor - printing values
     double xpos = GPSSensor.get_status().x;
     double ypos = GPSSensor.get_status().y;

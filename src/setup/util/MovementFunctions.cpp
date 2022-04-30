@@ -2,7 +2,7 @@
 #include "setup/util/MovementFunctions.h"
 #include "setup/control/base.h"
 
-#define CONVERSION_FACTOR (3.25*M_PI)
+#define CONVERSION_FACTOR (3.25*M_PI)*5/3
 
 //Function to go forward at a certain speed
 void forwardVelocity(double velocity){
@@ -34,11 +34,62 @@ void turnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
+		double kP = 2; //4
+		double kI = 0; //0.5
+		double kD = 1; //2
+
+		while((error < -0.07 || error > 0.07) && counter < 400){ //Was -0.2
+			error = (targetTheta - Inertial.get_heading());
+      pros::lcd::print(0, "error is %.3f", error);
+      if(error < -180){
+        error = error + 360;
+      }
+      else if(error > 180){
+        error = error - 360;
+      }
+			double derivative = error - prevError;
+			prevError = error;
+			integral = integral + error;
+			if (error < 0){
+				integral = 0;
+			}
+			if (error > 20){
+				integral = 0;
+			}
+			power = error*kP + derivative*kD + integral*kI;
+			LF.move_velocity(power);
+			LB.move_velocity(power);
+      LM.move_velocity(power);
+			RF.move_velocity(-power);
+      RM.move_velocity(-power);
+			RB.move_velocity(-power);
+      counter ++;
+			pros::delay(5);
+		}
+		LF.move_velocity(0);
+		LB.move_velocity(0);
+    LM.move_velocity(0);
+		RF.move_velocity(0);
+    RM.move_velocity(0);
+		RB.move_velocity(0);
+    pros::lcd::print(6, "exiting loop");
+}
+
+void preciseTurnPID(double targetTheta) {
+    pros::lcd::print(1, "running turn PID");
+		double current_angle = GPSSensor.get_heading();
+		double error = 2;
+		double integral = 0;
+		double derivative = 0;
+		double prevError = 0;
+		double power = 1;
+    double counter = 0;
+
 		double kP = 4; //4
 		double kI = 0; //0.5
 		double kD = 1; //2
 
-		while((error < -0.25 || error > 0.25) && counter < 400){ //Was -0.2
+		while((error < -0.05 || error > 0.05) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
@@ -81,7 +132,7 @@ void goForwardPID(double distance){
 	double prevError = 0;
 	double power = 1;
   double counter = 0;
-	double kP = 18; //18
+	double kP = 12; //18
 	double kD = 12.5; //12.5
 	double kI = 0.07; //0.1
 
@@ -93,7 +144,7 @@ void goForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.1 || error < -0.1) && counter < 300){
+	while ((error > 0.1 || error < -0.1) && counter < 200){
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
@@ -147,6 +198,15 @@ void moveToPoint(double x, double y){
   goForwardPID(forwardDistance);
 }
 
+void preciseBackToPoint(double x, double y){
+  double targetAngle = getAngle (x, y);
+  double forwardDistance = getLength(x, y);
+
+  preciseTurnPID(targetAngle + 180);
+  pros::delay(100);
+  goForwardPID(-forwardDistance);
+}
+
 void backToPoint(double x, double y){
   double targetAngle = getAngle (x, y);
   double forwardDistance = getLength(x, y);
@@ -167,7 +227,7 @@ void balancePID() {
 	double kD = 3;
 
   //Start going forward, wait until it starts climbing
-  while(Inertial.get_pitch() < 20 && Inertial.get_pitch() > -20){
+  while(Inertial.get_pitch() < 20 && Inertial.get_pitch() > -20){ //was +- 20
     forwardVelocity(100);
   }
   stop1();
@@ -195,7 +255,7 @@ void fastGoForwardPID(double distance){
 	double prevError = 0;
 	double power = 1;
   double counter = 0;
-	double kP = 22; //18
+	double kP = 25; //24
 	double kD = 12.5; //12.5
 	double kI = 0.07; //0.1
 
@@ -207,14 +267,14 @@ void fastGoForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.1 || error < -0.1) && counter < 300){
+	while ((error > 0.25 || error < -0.25) && counter < 300){ //0.1
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
-    double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
-    double LBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
-    double RFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
-    double RMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
-    double RBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double LMdistance = LM.get_position()*CONVERSION_FACTOR - LMcurrent;
+    double LBdistance = LB.get_position()*CONVERSION_FACTOR - LBcurrent;
+    double RFdistance = RF.get_position()*CONVERSION_FACTOR - RFcurrent;
+    double RMdistance = RM.get_position()*CONVERSION_FACTOR - RMcurrent;
+    double RBdistance = RB.get_position()*CONVERSION_FACTOR - RBcurrent;
 
     double avgDistanceTraveled = (LFdistance + LMdistance + LBdistance + RFdistance + RMdistance + RBdistance)/6;
 
@@ -263,4 +323,28 @@ void driverMovement(){
   LB.move(controller.get_analog(ANALOG_LEFT_Y));
   RF.move(controller.get_analog(ANALOG_RIGHT_Y));
   RB.move(controller.get_analog(ANALOG_RIGHT_Y));
+}
+
+void forwardForDistance(double amount, double speed){
+  double LFcurrent = LF.get_position() * CONVERSION_FACTOR;
+  double LMcurrent = LM.get_position() * CONVERSION_FACTOR;
+  double LBcurrent = LB.get_position() * CONVERSION_FACTOR;
+  double RFcurrent = RF.get_position() * CONVERSION_FACTOR;
+  double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
+  double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
+
+  double avgDistanceTraveled = 1;
+
+  while(avgDistanceTraveled < amount){
+    double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double LBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+    double RBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
+
+    avgDistanceTraveled = (LFdistance + LMdistance + LBdistance + RFdistance + RMdistance + RBdistance)/6;
+    forwardVelocity(speed);
+  }
+  stop1();
 }
