@@ -42,10 +42,10 @@ void opcontrol() {
 
 		//Intake
 		if(controller.get_digital(DIGITAL_L1)){
-      Intake.move_velocity(600);
+      Intake.move_velocity(500);
     }
     else if(controller.get_digital(DIGITAL_L2)){
-      Intake.move_velocity(-600);
+      Intake.move_velocity(-500);
     }
     else{
       Intake.move_velocity(0);
