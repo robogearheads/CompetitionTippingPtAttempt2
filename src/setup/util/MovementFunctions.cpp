@@ -34,7 +34,7 @@ void turnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
-		double kP = 2; //4
+		double kP = 1.8; //4
 		double kI = 0; //0.5
 		double kD = 1; //2
 
@@ -76,20 +76,18 @@ void turnPID(double targetTheta) {
 }
 
 void preciseTurnPID(double targetTheta) {
-    pros::lcd::print(1, "running turn PID");
-		double current_angle = GPSSensor.get_heading();
-		double error = 2;
+		double error = 1;
 		double integral = 0;
 		double derivative = 0;
 		double prevError = 0;
 		double power = 1;
     double counter = 0;
 
-		double kP = 4; //4
+		double kP = 2.2; //4
 		double kI = 0; //0.5
-		double kD = 1; //2
+		double kD = 1.2; //2
 
-		while((error < -0.05 || error > 0.05) && counter < 400){ //Was -0.2
+		while((error < -0.01 || error > 0.01) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
@@ -132,7 +130,7 @@ void goForwardPID(double distance){
 	double prevError = 0;
 	double power = 1;
   double counter = 0;
-	double kP = 12; //18
+	double kP = 11; //18
 	double kD = 12.5; //12.5
 	double kI = 0.07; //0.1
 
@@ -193,7 +191,7 @@ void moveToPoint(double x, double y){
   double targetAngle = getAngle (x, y);
   double forwardDistance = getLength(x, y);
 
-  turnPID(targetAngle);
+  preciseTurnPID(targetAngle);
   pros::delay(100);
   goForwardPID(forwardDistance);
 }
@@ -347,4 +345,101 @@ void forwardForDistance(double amount, double speed){
     forwardVelocity(speed);
   }
   stop1();
+}
+
+void arcMoveToPoint(double x, double y, double accuracy){
+  double counter = 0;
+  double forwardDistance = 1;
+
+  double fwdError = 100000;
+	double fwdIntegral = 0;
+	double fwdPrevError = 0;
+	double fwdPower = 1;
+
+  double turnError = 1;
+  double turnIntegral = 0;
+  double turnDerivative = 0;
+  double turnPrevError = 0;
+  double turnPower = 1;
+
+	double fwd_kP = 11; //18
+	double fwd_kD = 12.5; //12.5
+	double fwd_kI = 0.07; //0.1
+
+  double turn_kP = 2.2; //4
+  double turn_kI = 0; //0.5
+  double turn_kD = 1.2; //2
+
+  double turnEffect = 0.3;
+  double fwdEffect = 0.25;
+
+	while ((fwdError > accuracy || fwdError < -accuracy)){ //add counter back later
+    //Calculating distances
+    double targetAngle = getAngle (x, y);
+    forwardDistance = getLength(x, y);
+
+    fwdError = forwardDistance;
+
+		double fwdDerivative = fwdError - fwdPrevError;
+		fwdPrevError = fwdError;
+		fwdIntegral = fwdIntegral + fwdError;
+		if (fwdError < 0){
+			fwdIntegral = 0;
+		}
+		if (fwdError > (0.5*fwdError)){
+			fwdIntegral = 0;
+		}
+		fwdPower = fwdError*fwd_kP + fwdDerivative*fwd_kD + fwdIntegral*fwd_kI;
+
+    turnError = (targetAngle - Inertial.get_heading());
+    if(turnError < -180){
+      turnError = turnError + 360;
+    }
+    else if(turnError > 180){
+      turnError = turnError - 360;
+    }
+    double derivative = turnError - turnPrevError;
+    turnPrevError = turnError;
+    turnIntegral = turnIntegral + turnError;
+    if (turnError < 0){
+      turnIntegral = 0;
+    }
+    if (turnError > 20){
+      turnIntegral = 0;
+    }
+    turnPower = turnError*turn_kP + turnDerivative*turn_kD + turnIntegral*turn_kI;
+
+    double leftPower = fwdEffect*fwdPower + turnEffect*turnPower;
+    double rightPower = fwdEffect*fwdPower - turnEffect*turnPower;
+/*
+    while (leftPower < -200 || leftPower > 200 || rightPower < -200 || rightPower > 200){
+      double scalingFactor = 1;
+      scalingFactor = scalingFactor + 0.1;
+      leftPower = leftPower/scalingFactor;
+      rightPower = rightPower/scalingFactor;
+      pros::delay(2);
+    }
+*/
+    LF.move_velocity(leftPower);
+    LB.move_velocity(leftPower);
+    LM.move_velocity(leftPower);
+    RF.move_velocity(rightPower);
+    RM.move_velocity(rightPower);
+    RB.move_velocity(rightPower);
+
+    pros::lcd::print(4, "turnPower is %f", turnPower);
+    pros::lcd::print(5, "fwdPower is %f", fwdPower);
+    pros::lcd::print(6, "leftPower is %f", leftPower);
+    pros::lcd::print(7, "rightPower is %f", rightPower);
+
+    double xpos = GPSSensor.get_status().x;
+    double ypos = GPSSensor.get_status().y;
+    pros::lcd::print(0, "x value: %.3f", xpos*39.3700787402);
+    pros::lcd::print(1, "y value: %.3f", ypos*39.3700787402);
+    double robotHeading = GPSSensor.get_heading();
+    pros::lcd::print(2, "GPS heading: %.3f", robotHeading);
+
+    counter ++;
+		pros::delay(15);
+	}
 }

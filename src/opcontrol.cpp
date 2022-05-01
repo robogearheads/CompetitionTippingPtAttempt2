@@ -77,12 +77,18 @@ void opcontrol() {
 			RightWing.set_value(false);
 		}
 
+		//Turning (testing)
+		if(controller.get_digital(DIGITAL_Y)){
+			arcMoveToPoint(0, 0, 10);
+			pros::delay(1000);
+		}
+
     //GPS Sensor - printing values
     double xpos = GPSSensor.get_status().x;
     double ypos = GPSSensor.get_status().y;
 
-    pros::lcd::print(2, "x value: %.3f", xpos);
-    pros::lcd::print(3, "y value: %.3f", ypos);
+    pros::lcd::print(2, "x value: %.3f", xpos*39.3700787402);
+    pros::lcd::print(3, "y value: %.3f", ypos*39.3700787402);
     double robotHeading = GPSSensor.get_heading();
     pros::lcd::print(4, "GPS heading: %.3f", robotHeading);
 		pros::lcd::print(1, "Inertial heading: %.3f", Inertial.get_heading());
