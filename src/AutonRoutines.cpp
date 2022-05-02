@@ -269,9 +269,29 @@ void Skills(){
 
 	//Score
 	liftHeight = 600;
-	pros::delay(1500);
+	pros::delay(1700);
 	moveToPoint(1.0668, -0.2032);
 	Claw.set_value(true);
+
+	//Get next goal
+	goForwardPID(-20);
+	liftHeight = 0;
+	turnPID(-45);
+	goForwardPID(20);
+	Claw.set_value(false);
+	turnPID(-125);
+	liftHeight = 500;
+
+	//Align + park
+	goForwardPID(80);
+	turnPID(0);
+	goForwardPID(30);
+	liftHeight = 0;
+	pros::delay(1000);
+	balancePID();
+
+	//Fix - placement of blue/yellow goal, don't lift and turn, decrease beginning time, end stuff
+
 }
 
 void RakeTable(){

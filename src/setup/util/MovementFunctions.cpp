@@ -34,9 +34,9 @@ void turnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
-		double kP = 1.8; //4
+		double kP = 2.2; //4
 		double kI = 0; //0.5
-		double kD = 1; //2
+		double kD = 0.8; //2
 
 		while((error < -0.07 || error > 0.07) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
@@ -85,7 +85,7 @@ void preciseTurnPID(double targetTheta) {
 
 		double kP = 2.2; //4
 		double kI = 0; //0.5
-		double kD = 1.2; //2
+		double kD = 1.1; //2
 
 		while((error < -0.01 || error > 0.01) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
@@ -370,8 +370,8 @@ void arcMoveToPoint(double x, double y, double accuracy){
   double turn_kI = 0; //0.5
   double turn_kD = 1.2; //2
 
-  double turnEffect = 0.3;
-  double fwdEffect = 0.25;
+  double turnEffect = 0.4;
+  double fwdEffect = 0.35;
 
 	while ((fwdError > accuracy || fwdError < -accuracy)){ //add counter back later
     //Calculating distances
