@@ -105,12 +105,15 @@ void WinTriangle(){
 }
 
 void CenterMiddle (){
+	pros::Task lift(liftPID);
 	Claw.set_value(true);
 	BackClamp.set_value(false);
 	forwardForDistance(57, 195);
+	liftHeight = 50;
 	Claw.set_value(false);
 	fastGoForwardPID(-20);
 	goForwardPID(-19);
+	lift.remove();
 	turnPID(-90);
 	goForwardPID(-31);
 	BackClamp.set_value(true);
@@ -123,12 +126,15 @@ void CenterMiddle (){
 }
 
 void CenterTable(){
+	pros::Task lift(liftPID);
 	BackClamp.set_value(false);
 	Claw.set_value(true); //39
   forwardForDistance(40, 195);
+	liftHeight = 50;
   Claw.set_value(false);
 	fastGoForwardPID(-10);
 	goForwardPID(-11);
+	lift.remove();
 	turnPID(-90);
 	goForwardPID(-15);
   BackClamp.set_value(true);
@@ -146,11 +152,12 @@ void CenterBanner(){
 	pros::Task lift(liftPID);
 	Claw.set_value(true);
 	forwardForDistance(44, 195);
+	liftHeight = 50;
   Claw.set_value(false);
   pros::delay(10);
-	liftHeight = 100;
 	fastGoForwardPID(-20);
-	goForwardPID(-30);
+	goForwardPID(-35);
+	lift.remove();
 	pros::delay(500);
 	goForwardPID(2);
 	turnPID(-85);
@@ -160,7 +167,6 @@ void CenterBanner(){
 	Intake.move_velocity(-500);
 	pros::delay(2000);
 	forwardForDistance(10, 50);
-	lift.remove();
 	Intake.move_velocity(0);
 	BackClamp.set_value(false);
 	forwardForDistance(5, 50);
@@ -183,20 +189,25 @@ void Banner2(){
 }
 
 void Table2(){
+	pros::Task lift(liftPID);
 	BackClamp.set_value(false);
 	Claw.set_value(true); //39
   forwardForDistance(41, 195);
+	liftHeight = 50;
   Claw.set_value(false);
-	fastGoForwardPID(-21.5);
+	fastGoForwardPID(-23.5);
+	liftHeight = -50;
+	pros::delay(400);
 	Claw.set_value(true);
-	goForwardPID(-14);
-	turnPID(-43);
+	lift.remove();
+	goForwardPID(-12);
+	turnPID(-40);
 	goForwardPID(52);
 	Claw.set_value(false);
 	pros::delay(100);
-	goForwardPID(-41);
+	goForwardPID(-42);
 	turnPID(-90);
-	goForwardPID(-26);
+	goForwardPID(-32);
 	BackClamp.set_value(true);
 	pros::delay(500);
 	Intake.move_velocity(-500);
@@ -223,73 +234,100 @@ void Skills(){
 	liftHeight = 0;
 	preciseTurnPID(94);
 	Intake.move_velocity(-450);
-	goForwardPID(52);
+	goForwardPID(51);
 	pros::delay(700);
 	Claw.set_value(false);
 
 	//Score first goal
+	pros::delay(300);
+	double goal1Angle = getAngle(1.143, 0.2032);
+	double goal1Length = getLength(1.143, 0.2032);
+	preciseTurnPID(goal1Angle);
 	liftHeight = 800;
-	pros::delay(1500);
-	moveToPoint(1.1, 0.2286);
-	liftHeight = 600;
 	pros::delay(1000);
+	goForwardPID(goal1Length);
+	liftHeight = 530;
+	pros::delay(500);
 	Claw.set_value(true);
+	Intake.move_velocity(0);
 	BackClamp.set_value(false);
 	goForwardPID(-16);
 	goForwardPID(7);
 
 	//Score second goal
-	liftHeight = 0;
+	liftHeight = -1;
 	preciseTurnPID(Inertial.get_heading() + 180);
-	forwardForDistance(8, 50);
+	forwardForDistance(10, 50);
 	Claw.set_value(false);
 	pros::delay(500);
-	preciseTurnPID(Inertial.get_heading() + 165);
+	preciseTurnPID(Inertial.get_heading() + 192);
 	liftHeight = 550;
 	pros::delay(1500);
-	goForwardPID(20);
+	goForwardPID(25);
 	Claw.set_value(true);
 
 	//Get next goal
-	goForwardPID(-5);
-	liftHeight = 0;
-	turnPID(180);
-	goForwardPID(-43);
+	goForwardPID(-6);
+	liftHeight = 200;
+	turnPID(-180);
+	goForwardPID(-44);
 	BackClamp.set_value(true);
+	Intake.move_velocity(-500);
 
 	//Get next goal while picking up rings
-	liftHeight = 400;
-	pros::delay(500);
-	//moveToPoint(0.508, -0.8382);
-	arcMoveToPoint(0.4064, -0.9398, 6);
+	//moveToPoint(0.9144, -0.9144);
+	preciseTurnPID(180);
+	goForwardPID(85);
+	liftHeight = 100;
+	preciseTurnPID(-90);
+	goForwardPID(28);
 	liftHeight = 0;
-	turnPID(-90);
-	goForwardPID(13);
+	Intake.move_velocity(0);
+	pros::delay(500);
+	goForwardPID(6);
 	Claw.set_value(false);
 
+	//New path - 190 instead of 230
+	liftHeight = 700;
+	Intake.move_velocity(-500);
+	goForwardPID(43);
+	forwardForDistance(30, 60);
+	Intake.move_velocity(0);
+	preciseTurnPID(0);
+	goForwardPID(5);
+	liftHeight = 0;
+	pros::delay(1500);
+	balancePID();
+
+/* - For the 230 pt - prob not gonna happen
 	//Score
-	liftHeight = 600;
-	pros::delay(1700);
-	moveToPoint(1.0668, -0.2032);
+	double goal3Angle = getAngle(1.1176, -0.1778);
+	double goal3Length = getLength(1.1176, -0.1778);
+	preciseTurnPID(goal3Angle);
+	liftHeight = 650;
+	pros::delay(500);
+	goForwardPID(goal3Length);
 	Claw.set_value(true);
 
 	//Get next goal
 	goForwardPID(-20);
 	liftHeight = 0;
-	turnPID(-45);
-	goForwardPID(20);
+	turnPID(-53);
+	goForwardPID(30);
 	Claw.set_value(false);
 	turnPID(-125);
-	liftHeight = 500;
+	liftHeight = 700;
+	Intake.move_velocity(500);
 
 	//Align + park
-	goForwardPID(80);
-	turnPID(0);
-	goForwardPID(30);
+	goForwardPID(86);
+	turnPID(-6);
+	goForwardPID(20);
 	liftHeight = 0;
-	pros::delay(1000);
+	pros::delay(1500);
+	Intake.move_velocity(0);
 	balancePID();
-
+*/
 	//Fix - placement of blue/yellow goal, don't lift and turn, decrease beginning time, end stuff
 
 }

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "setup/util/MovementFunctions.h"
 #include "setup/control/base.h"
+#include "setup/control/lifts.h"
 
 #define CONVERSION_FACTOR (3.25*M_PI)*5/3
 
@@ -34,7 +35,7 @@ void turnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
-		double kP = 2.2; //4
+		double kP = 1.3; //4
 		double kI = 0; //0.5
 		double kD = 0.8; //2
 
@@ -83,11 +84,11 @@ void preciseTurnPID(double targetTheta) {
 		double power = 1;
     double counter = 0;
 
-		double kP = 2.2; //4
+		double kP = 1.9; //4
 		double kI = 0; //0.5
-		double kD = 1.1; //2
+		double kD = 1.2; //2
 
-		while((error < -0.01 || error > 0.01) && counter < 400){ //Was -0.2
+		while((error < -0.003 || error > 0.003) && counter < 400){ //Was -0.2
 			error = (targetTheta - Inertial.get_heading());
       pros::lcd::print(0, "error is %.3f", error);
       if(error < -180){
@@ -142,7 +143,7 @@ void goForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.1 || error < -0.1) && counter < 200){
+	while ((error > 0.3 || error < -0.3) && counter < 200){
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
@@ -221,7 +222,7 @@ void balancePID() {
 	double prevError = 0;
 	double power = 1;
 
-	double kP = 3.5;
+	double kP = 2;
 	double kD = 3;
 
   //Start going forward, wait until it starts climbing
@@ -235,6 +236,7 @@ void balancePID() {
     error = Inertial.get_pitch();
     if(Inertial.get_pitch() > 10 && Inertial.get_pitch() < 20){
       error = error - 38;
+      BackClamp.set_value(false);
     }
     else if(Inertial.get_pitch() < -10 && Inertial.get_pitch() > -20){
       error = error + 38;
@@ -265,7 +267,7 @@ void fastGoForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.25 || error < -0.25) && counter < 300){ //0.1
+	while ((error > 0.15 || error < -0.15) && counter < 300){ //0.1
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LM.get_position()*CONVERSION_FACTOR - LMcurrent;
@@ -332,8 +334,9 @@ void forwardForDistance(double amount, double speed){
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
   double avgDistanceTraveled = 1;
+  double counter = 0;
 
-  while(avgDistanceTraveled < amount){
+  while(avgDistanceTraveled < amount && counter < 350){
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LBdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
@@ -343,6 +346,10 @@ void forwardForDistance(double amount, double speed){
 
     avgDistanceTraveled = (LFdistance + LMdistance + LBdistance + RFdistance + RMdistance + RBdistance)/6;
     forwardVelocity(speed);
+
+    counter ++;
+
+    pros::delay(20);
   }
   stop1();
 }

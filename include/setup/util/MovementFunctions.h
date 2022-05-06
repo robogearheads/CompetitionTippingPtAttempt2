@@ -22,3 +22,6 @@ void arcMoveToPoint(double x, double y, double accuracy);
 
 void DriverBalancePID();
 void driverMovement();
+
+double getAngle(double pointX, double pointY);
+double getLength(double pointX, double pointY);
