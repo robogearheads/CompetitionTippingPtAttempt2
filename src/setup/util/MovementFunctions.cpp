@@ -267,7 +267,7 @@ void fastGoForwardPID(double distance){
   double RMcurrent = RM.get_position() * CONVERSION_FACTOR;
   double RBcurrent = RB.get_position() * CONVERSION_FACTOR;
 
-	while ((error > 0.15 || error < -0.15) && counter < 300){ //0.1
+	while ((error > 0.08 || error < -0.08) && counter < 300){ //0.1
     //forward distances (motors separate)
     double LFdistance = LF.get_position()*CONVERSION_FACTOR - LFcurrent;
     double LMdistance = LM.get_position()*CONVERSION_FACTOR - LMcurrent;

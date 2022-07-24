@@ -154,22 +154,17 @@ void CenterBanner(){
 	forwardForDistance(44, 195);
 	liftHeight = 50;
   Claw.set_value(false);
-  pros::delay(10);
-	fastGoForwardPID(-20);
-	goForwardPID(-35);
 	lift.remove();
-	pros::delay(500);
-	goForwardPID(2);
-	turnPID(-85);
-	goForwardPID(-12.5);
-	BackClamp.set_value(true);
-	pros::delay(1000);
-	Intake.move_velocity(-500);
-	pros::delay(2000);
-	forwardForDistance(10, 50);
-	Intake.move_velocity(0);
-	BackClamp.set_value(false);
-	forwardForDistance(5, 50);
+	FrontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
+  pros::delay(5);
+	fastGoForwardPID(-55);
+
+	LF.set_brake_mode(MOTOR_BRAKE_HOLD);
+	LB.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RF.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RB.set_brake_mode(MOTOR_BRAKE_HOLD);
+	LM.set_brake_mode(MOTOR_BRAKE_HOLD);
+	RM.set_brake_mode(MOTOR_BRAKE_HOLD);
 }
 
 void Banner2(){
@@ -201,13 +196,13 @@ void Table2(){
 	Claw.set_value(true);
 	lift.remove();
 	goForwardPID(-12);
-	turnPID(-40);
+	turnPID(-38.5);
 	goForwardPID(52);
 	Claw.set_value(false);
 	pros::delay(100);
-	goForwardPID(-42);
+	goForwardPID(-42.5);
 	turnPID(-90);
-	goForwardPID(-32);
+	goForwardPID(-31);
 	BackClamp.set_value(true);
 	pros::delay(500);
 	Intake.move_velocity(-500);
